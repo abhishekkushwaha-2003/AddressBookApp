@@ -1,3 +1,2 @@
 # Address Book App
-
-feature/UC2-add-contact
+feature/UC3-edit-contact
