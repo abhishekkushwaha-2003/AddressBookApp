@@ -57,16 +57,16 @@ public class AddressBookRESTAssuredTest {
 	public void givenNewCityForContact_WhenUpdated_ShouldSyncWithAddressBook() {
 		AddressBook addressBook = new AddressBook();
 
-		// 1. fetching data first 
+		// fetching data
 		Response response = RestAssured.get("/contacts");
 		Contact[] contacts = response.as(Contact[].class);
 		addressBook.setContactList(Arrays.asList(contacts));
 
-		// updating city in local memory
+		// 2. Local memory update city
 		String contactName = "Aditya";
 		String newCity = "Mumbai";
 
-		// 3. API par PUT request 
+		// 3. API par PUT request
 		Response updateResponse = RestAssured.given().contentType("application/json")
 				.body("{\"firstName\":\"Aditya\", \"lastName\":\"Jayswal\", \"city\":\"" + newCity
 						+ "\", \"state\":\"MH\", \"zip\":\"400001\"}")
@@ -81,4 +81,27 @@ public class AddressBookRESTAssuredTest {
 		System.out.println("UC 24: Updated City in JSON Server: " + updatedCity);
 		Assertions.assertEquals(newCity, updatedCity);
 	}
+	
+	@Test
+    public void givenContactToDelete_WhenDeleted_ShouldSyncWithAddressBook() {
+        AddressBook addressBook = new AddressBook();
+        
+        Response initialResponse = RestAssured.get("/contacts");
+        Contact[] initialContacts = initialResponse.as(Contact[].class);
+        int initialCount = initialContacts.length;
+        System.out.println("UC 25: Initial count before delete: " + initialCount);
+
+        Response deleteResponse = RestAssured.delete("/contacts/2");
+
+        Assertions.assertEquals(200, deleteResponse.getStatusCode());
+
+        // 3. Verification: Sync check
+        Response finalResponse = RestAssured.get("/contacts");
+        Contact[] finalContacts = finalResponse.as(Contact[].class);
+        addressBook.setContactList(Arrays.asList(finalContacts));
+
+        System.out.println("UC 25: Final count after delete: " + addressBook.countEntries());
+        
+        Assertions.assertEquals(initialCount - 1, addressBook.countEntries());
+    }
 }
