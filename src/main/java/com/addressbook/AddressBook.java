@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import java.util.Map;
 import java.util.HashMap;
 
+
 public class AddressBook {
 
 	private ArrayList<Contact> contactList = new ArrayList<>();
@@ -287,12 +288,13 @@ public class AddressBook {
 	}
 
 	// UC 22 helper: Local memory sync with REST API data
-		public void setContactList(List<Contact> contactList) {
-		    this.contactList = new ArrayList<>(contactList);
-		}
+	public void setContactList(List<Contact> contactList) {
+		this.contactList = new ArrayList<>(contactList);
+	}
 
-		// for Verification helper 
-		public long countEntries() {
-		    return this.contactList.size();
-		}
+	// for Verification helper
+	public long countEntries() {
+		return this.contactList.size();
+	}
+
 }
