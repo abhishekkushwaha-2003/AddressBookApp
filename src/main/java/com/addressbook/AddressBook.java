@@ -1,270 +1,283 @@
 package com.addressbook;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
+
+/*
+ * AddressBook class containing all UC operations
+ */
 
 public class AddressBook {
 
-    private ArrayList<Contact> contactList = new ArrayList<>();
+	private ArrayList<Contact> contactList = new ArrayList<>();
 
-    // UC2 + UC7
-    public void addContact(Contact contact) {
+	// UC2 + UC7 Add contact with duplicate check
+	public void addContact(Contact contact) {
 
-        for (Contact c : contactList) {
-            if (c.getFirstName().equalsIgnoreCase(contact.getFirstName())) {
-                System.out.println("Contact already exists.");
-                return;
-            }
-        }
+		for (Contact c : contactList) {
 
-        contactList.add(contact);
-        System.out.println("Contact added successfully.");
-    }
+			if (c.getFirstName().equalsIgnoreCase(contact.getFirstName())) {
 
-    // UC2
-    public void displayContacts() {
-        for (Contact c : contactList) {
-            System.out.println(c);
-        }
-    }
+				System.out.println("Contact already exists.");
+				return;
+			}
+		}
 
-    // UC3
-    public void editContact(String name, Contact updated) {
+		contactList.add(contact);
+		System.out.println("Contact added successfully.");
+	}
 
-        for (int i = 0; i < contactList.size(); i++) {
+	// UC2 Display contacts
+	public void displayContacts() {
 
-            if (contactList.get(i).getFirstName().equalsIgnoreCase(name)) {
+		for (Contact c : contactList)
+			System.out.println(c);
+	}
 
-                contactList.set(i, updated);
-                System.out.println("Contact updated.");
-                return;
-            }
-        }
+	// UC3 Edit contact
+	public void editContact(String name, Contact updated) {
 
-        System.out.println("Contact not found.");
-    }
+		for (int i = 0; i < contactList.size(); i++) {
 
-    // UC4
-    public void deleteContact(String name) {
+			if (contactList.get(i).getFirstName().equalsIgnoreCase(name)) {
 
-        contactList.removeIf(c ->
-                c.getFirstName().equalsIgnoreCase(name));
+				contactList.set(i, updated);
+				System.out.println("Contact updated.");
+				return;
+			}
+		}
 
-        System.out.println("Contact deleted if existed.");
-    }
+		System.out.println("Contact not found.");
+	}
 
-    // UC8
-    public void searchByCity(String city) {
+	// UC4 Delete contact
+	public void deleteContact(String name) {
 
-        for (Contact c : contactList) {
+		contactList.removeIf(c -> c.getFirstName().equalsIgnoreCase(name));
+		System.out.println("Contact deleted.");
+	}
 
-            if (c.getCity().equalsIgnoreCase(city)) {
-                System.out.println(c);
-            }
-        }
-    }
+	// UC5 Search person by city
+	public void searchByCity(String city) {
 
-    // UC8
-    public void searchByState(String state) {
+		for (Contact c : contactList)
+			if (c.getCity().equalsIgnoreCase(city))
+				System.out.println(c);
+	}
 
-        for (Contact c : contactList) {
+	// UC6 Search person by state
+	public void searchByState(String state) {
 
-            if (c.getState().equalsIgnoreCase(state)) {
-                System.out.println(c);
-            }
-        }
-    }
+		for (Contact c : contactList)
+			if (c.getState().equalsIgnoreCase(state))
+				System.out.println(c);
+	}
 
-    // UC9
-    public void viewPersonsByCity(String city) {
+	// UC7 View persons by city
+	public void viewPersonsByCity(String city) {
 
-        for (Contact c : contactList) {
+		for (Contact c : contactList)
+			if (c.getCity().equalsIgnoreCase(city))
+				System.out.println(c);
+	}
 
-            if (c.getCity().equalsIgnoreCase(city)) {
-                System.out.println(c);
-            }
-        }
-    }
+	// UC8 View persons by state
+	public void viewPersonsByState(String state) {
 
-    // UC9
-    public void viewPersonsByState(String state) {
+		for (Contact c : contactList)
+			if (c.getState().equalsIgnoreCase(state))
+				System.out.println(c);
+	}
 
-        for (Contact c : contactList) {
+	// UC9 Count persons by city
+	public void countByCity(String city) {
 
-            if (c.getState().equalsIgnoreCase(state)) {
-                System.out.println(c);
-            }
-        }
-    }
+		long count = contactList.stream().filter(c -> c.getCity().equalsIgnoreCase(city)).count();
 
-    // UC10
-    public void countByCity(String city) {
+		System.out.println("Persons in city " + city + " : " + count);
+	}
 
-        int count = 0;
+	// UC10 Count persons by state
+	public void countByState(String state) {
 
-        for (Contact c : contactList) {
-            if (c.getCity().equalsIgnoreCase(city)) {
-                count++;
-            }
-        }
+		long count = contactList.stream().filter(c -> c.getState().equalsIgnoreCase(state)).count();
 
-        System.out.println("Persons in city " + city + " : " + count);
-    }
+		System.out.println("Persons in state " + state + " : " + count);
+	}
 
-    // UC10
-    public void countByState(String state) {
+	// UC11 Sort contacts by name
+	public void sortContactsByName() {
 
-        int count = 0;
+		contactList.sort((c1, c2) -> c1.getFirstName().compareToIgnoreCase(c2.getFirstName()));
 
-        for (Contact c : contactList) {
-            if (c.getState().equalsIgnoreCase(state)) {
-                count++;
-            }
-        }
+		displayContacts();
+	}
 
-        System.out.println("Persons in state " + state + " : " + count);
-    }
+	// UC12 Sort by city
+	public void sortByCity() {
 
-    // UC11
-    public void sortContactsByName() {
+		contactList.sort((c1, c2) -> c1.getCity().compareToIgnoreCase(c2.getCity()));
 
-        contactList.sort((c1, c2) ->
-                c1.getFirstName().compareToIgnoreCase(c2.getFirstName()));
+		displayContacts();
+	}
 
-        displayContacts();
-    }
+	// UC12 Sort by state
+	public void sortByState() {
 
-    // UC12
-    public void sortByCity() {
+		contactList.sort((c1, c2) -> c1.getState().compareToIgnoreCase(c2.getState()));
 
-        contactList.sort((c1, c2) ->
-                c1.getCity().compareToIgnoreCase(c2.getCity()));
+		displayContacts();
+	}
 
-        displayContacts();
-    }
+	// UC12 Sort by zip
+	public void sortByZip() {
 
-    // UC12
-    public void sortByState() {
+		contactList.sort((c1, c2) -> c1.getZip().compareToIgnoreCase(c2.getZip()));
 
-        contactList.sort((c1, c2) ->
-                c1.getState().compareToIgnoreCase(c2.getState()));
+		displayContacts();
+	}
 
-        displayContacts();
-    }
+	// UC13 Write TXT file
+	public void writeContactsToFile() {
 
-    // UC12
-    public void sortByZip() {
+		try {
 
-        contactList.sort((c1, c2) ->
-                c1.getZip().compareToIgnoreCase(c2.getZip()));
+			PrintWriter pw = new PrintWriter(new FileWriter("addressbook.txt"));
 
-        displayContacts();
-    }
+			for (Contact c : contactList)
+				pw.println(c.getFirstName() + "," + c.getLastName() + "," + c.getCity() + "," + c.getState());
 
-    // UC13 Write File
-    public void writeContactsToFile() {
+			pw.close();
 
-        try {
+			System.out.println("Contacts written to TXT.");
 
-            FileWriter fw = new FileWriter("addressbook.txt");
-            PrintWriter pw = new PrintWriter(fw);
+		} catch (Exception e) {
 
-            for (Contact c : contactList) {
+			System.out.println("Error writing file.");
+		}
+	}
 
-                pw.println(c.getFirstName() + "," +
-                        c.getLastName() + "," +
-                        c.getCity() + "," +
-                        c.getState());
-            }
+	// UC13 Read TXT
+	public void readContactsFromFile() {
 
-            pw.close();
+		try {
 
-            System.out.println("Contacts written to file.");
+			Scanner scanner = new Scanner(new File("addressbook.txt"));
 
-        } catch (Exception e) {
+			while (scanner.hasNextLine())
+				System.out.println(scanner.nextLine());
 
-            System.out.println("Error writing file.");
-        }
-    }
+			scanner.close();
 
-    // UC13 Read File
-    public void readContactsFromFile() {
+		} catch (Exception e) {
 
-        try {
+			System.out.println("Error reading file.");
+		}
+	}
 
-            File file = new File("addressbook.txt");
-            Scanner scanner = new Scanner(file);
+	// UC14 Write CSV
+	public void writeContactsToCSV() {
 
-            while (scanner.hasNextLine()) {
+		try {
 
-                System.out.println(scanner.nextLine());
-            }
+			FileWriter writer = new FileWriter("addressbook.csv");
 
-            scanner.close();
+			writer.append("FirstName,LastName,Address,City,State,Zip,Phone,Email\n");
 
-        } catch (Exception e) {
+			for (Contact c : contactList) {
 
-            System.out.println("Error reading file.");
-        }
-    }
-    
- // UC14 Write CSV File
-    public void writeContactsToCSV() {
+				writer.append(c.getFirstName()).append(",").append(c.getLastName()).append(",").append(c.getAddress())
+						.append(",").append(c.getCity()).append(",").append(c.getState()).append(",").append(c.getZip())
+						.append(",").append(c.getPhoneNumber()).append(",").append(c.getEmail()).append("\n");
+			}
 
-        try {
+			writer.close();
 
-            FileWriter writer = new FileWriter("addressbook.csv");
+			System.out.println("Contacts written to CSV.");
 
-            writer.append("FirstName,LastName,Address,City,State,Zip,Phone,Email\n");
+		} catch (Exception e) {
 
-            for (Contact c : contactList) {
+			System.out.println("Error writing CSV.");
+		}
+	}
 
-                writer.append(c.getFirstName()).append(",");
-                writer.append(c.getLastName()).append(",");
-                writer.append(c.getAddress()).append(",");
-                writer.append(c.getCity()).append(",");
-                writer.append(c.getState()).append(",");
-                writer.append(c.getZip()).append(",");
-                writer.append(c.getPhoneNumber()).append(",");
-                writer.append(c.getEmail()).append("\n");
+	// UC14 Read CSV
+	public void readContactsFromCSV() {
 
-            }
+		try {
 
-            writer.flush();
-            writer.close();
+			Scanner scanner = new Scanner(new File("addressbook.csv"));
 
-            System.out.println("Contacts written to CSV file.");
+			while (scanner.hasNextLine())
+				System.out.println(scanner.nextLine());
 
-        } catch (Exception e) {
+			scanner.close();
 
-            System.out.println("Error writing CSV file.");
-        }
-    }
-    
- // UC14 Read CSV File
-    public void readContactsFromCSV() {
+		} catch (Exception e) {
 
-        try {
+			System.out.println("Error reading CSV.");
+		}
+	}
 
-            File file = new File("addressbook.csv");
-            Scanner scanner = new Scanner(file);
+	// UC15 Write JSON
+	public void writeContactsToJSON() {
 
-            System.out.println("Reading CSV File:");
+		try {
 
-            while (scanner.hasNextLine()) {
+			Gson gson = new Gson();
+			FileWriter writer = new FileWriter("addressbook.json");
 
-                System.out.println(scanner.nextLine());
+			gson.toJson(contactList, writer);
 
-            }
+			writer.close();
 
-            scanner.close();
+			System.out.println("Contacts written to JSON.");
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            System.out.println("Error reading CSV file.");
-        }
-    }
+			System.out.println("Error writing JSON.");
+		}
+	}
+
+	// UC15 Read JSON
+	public void readContactsFromJSON() {
+
+		try {
+
+			Gson gson = new Gson();
+			FileReader reader = new FileReader("addressbook.json");
+
+			Contact[] contacts = gson.fromJson(reader, Contact[].class);
+
+			if (contacts != null)
+				for (Contact c : contacts)
+					System.out.println(c);
+
+			reader.close();
+
+		} catch (Exception e) {
+
+			System.out.println("Error reading JSON.");
+		}
+	}
+
+	// UC16 Retrieve from MySQL
+	public void readContactsFromDatabase() {
+
+		AddressBookDBService dbService = new AddressBookDBService();
+
+		List<Contact> contacts = dbService.readContactsFromDatabase();
+
+		System.out.println("\n--- Contacts from Database ---");
+
+		contacts.forEach(System.out::println);
+	}
+
 }

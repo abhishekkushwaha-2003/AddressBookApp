@@ -1,63 +1,46 @@
 package com.addressbook;
 
 import java.io.File;
-import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
+import java.util.Scanner;
 
 public class AddressBookFileIO {
 
-	public void writeData(List<Contact> contacts) {
+    public void writeData(List<Contact> contacts) {
+        try {
+            FileWriter fileWriter = new FileWriter("addressbook.txt");
+            PrintWriter printWriter = new PrintWriter(fileWriter);
 
-		try {
+            for (Contact contact : contacts) {
+                printWriter.println(contact.getFirstName() + "," + contact.getLastName() + "," + contact.getCity() + ","
+                        + contact.getState() + "," + contact.getPhoneNumber());
+            }
 
-			FileWriter fileWriter = new FileWriter("addressbook.txt");
-			PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.close();
+            System.out.println("Contacts successfully written to file.");
 
-			for (Contact contact : contacts) {
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+        }
+    }
 
-				printWriter.println(contact.getFirstName() + "," + contact.getLastName() + "," + contact.getCity() + ","
-						+ contact.getState() + "," + contact.getPhoneNumber());
+    public void readData() {
+        try {
+            File file = new File("addressbook.txt");
+            Scanner scanner = new Scanner(file);
 
-			}
+            while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
 
-			printWriter.close();
+            scanner.close();
 
-			System.out.println("Contacts successfully written to file.");
-
-		} catch (IOException e) {
-
-			System.out.println("Error writing to file");
-
-		}
-
-	}
-
-	public void readData() {
-
-		try {
-
-			File file = new File("addressbook.txt");
-			Scanner scanner = new Scanner(file);
-
-			while (scanner.hasNextLine()) {
-
-				System.out.println(scanner.nextLine());
-
-			}
-
-			scanner.close();
-
-		} catch (FileNotFoundException e) {
-
-			System.out.println("File not found");
-
-		}
-
-	}
-
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+    }
 }
