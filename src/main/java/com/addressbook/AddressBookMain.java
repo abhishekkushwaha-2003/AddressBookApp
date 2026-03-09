@@ -1,6 +1,10 @@
 package com.addressbook;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+
 
 public class AddressBookMain {
 
@@ -43,13 +47,14 @@ public class AddressBookMain {
 			System.out.println("26 View Contacts Grouped by State");
 			System.out.println("27 Count Contacts by City in DB");
 			System.out.println("28 Count Contacts by State in DB");
-			System.out.println("29 Exit");
+			System.out.println("29 Add Multiple Contacts using Threads");
+			System.out.println("30 Exit");
 
 			System.out.print("Enter Choice: ");
 
 			int choice = scanner.nextInt();
-			scanner.nextLine(); // Consume the newline character
-
+			scanner.nextLine(); 
+			
 			switch (choice) {
 
 			// UC1 & UC2: Add a new contact
@@ -239,20 +244,28 @@ public class AddressBookMain {
 				break;
 
 			case 24:
-			    System.out.println("--- Add Contact to Database ---");
-			    System.out.print("First Name: "); String fn = scanner.nextLine();
-			    System.out.print("Last Name: "); String ln = scanner.nextLine();
-			    System.out.print("Address: "); String addr = scanner.nextLine();
-			    System.out.print("City: "); String ci = scanner.nextLine();
-			    System.out.print("State: "); String st = scanner.nextLine();
-			    System.out.print("Zip: "); String zp = scanner.nextLine();
-			    System.out.print("Phone: "); String ph = scanner.nextLine();
-			    System.out.print("Email: "); String em = scanner.nextLine();
+				System.out.println("--- Add Contact to Database ---");
+				System.out.print("First Name: ");
+				String fn = scanner.nextLine();
+				System.out.print("Last Name: ");
+				String ln = scanner.nextLine();
+				System.out.print("Address: ");
+				String addr = scanner.nextLine();
+				System.out.print("City: ");
+				String ci = scanner.nextLine();
+				System.out.print("State: ");
+				String st = scanner.nextLine();
+				System.out.print("Zip: ");
+				String zp = scanner.nextLine();
+				System.out.print("Phone: ");
+				String ph = scanner.nextLine();
+				System.out.print("Email: ");
+				String em = scanner.nextLine();
 
-			    Contact newDBContact = new Contact(fn, ln, addr, ci, st, zp, ph, em);
-			    addressBook.addContactToDatabase(newDBContact);
-			    break;
-			    
+				Contact newDBContact = new Contact(fn, ln, addr, ci, st, zp, ph, em);
+				addressBook.addContactToDatabase(newDBContact);
+				break;
+
 			// View Grouped by City
 			case 25:
 				addressBook.displayContactsByCity();
@@ -277,8 +290,55 @@ public class AddressBookMain {
 				addressBook.countContactsByStateInDB(dbStateCount);
 				break;
 
-			// Exit Program
+			// UC 21: Add Multiple Contacts using Threads
 			case 29:
+    			List<Contact> threadContacts = new ArrayList<>();
+    			System.out.println("Enter number of contacts to add via Threads:");
+    			int numContacts = scanner.nextInt();
+    			scanner.nextLine(); // consume newline character
+
+    			for (int i = 0; i < numContacts; i++) {
+       	 			System.out.println("\nEnter details for Contact " + (i + 1) + ":");
+        
+        			System.out.print("First Name: ");
+        			String fName = scanner.nextLine();
+        
+       				System.out.print("Last Name: ");
+        			String lName = scanner.nextLine();
+        
+        			System.out.print("Address: ");
+        			String addr1 = scanner.nextLine();
+        
+        			System.out.print("City: ");
+        			String city1 = scanner.nextLine();
+        
+        			System.out.print("State: ");
+        			String state1 = scanner.nextLine();
+        
+        			System.out.print("Zip: ");
+        			String zip1 = scanner.nextLine();
+        
+        			System.out.print("Phone: ");
+        			String phone1 = scanner.nextLine();
+        
+        			System.out.print("Email: ");
+        			String email1 = scanner.nextLine();
+
+        			threadContacts.add(new Contact(fName, lName, addr1, city1, state1, zip1, phone1, email1));
+    			}
+
+					
+    			long start = System.currentTimeMillis();
+
+					
+    			addressBook.addMultipleContactsWithThreads(threadContacts);
+    
+    			long end = System.currentTimeMillis();
+    			System.out.println("Execution time using Multithreading: " + (end - start) + " ms");
+    			break;
+
+			// Exit Program
+			case 30:
 				exit = true;
 				System.out.println("Exiting Address Book...");
 				break;
