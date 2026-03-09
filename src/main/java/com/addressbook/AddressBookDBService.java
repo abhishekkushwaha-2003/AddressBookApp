@@ -159,7 +159,7 @@ public class AddressBookDBService {
 			Thread thread = new Thread(task, contact.getFirstName());
 			thread.start();
 			try {
-				thread.join(); // Wait for thread to finish
+				thread.join(); 
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

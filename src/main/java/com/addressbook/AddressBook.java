@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import java.util.Map;
 import java.util.HashMap;
 
-
 public class AddressBook {
 
 	private ArrayList<Contact> contactList = new ArrayList<>();
@@ -274,7 +273,6 @@ public class AddressBook {
 		boolean result = dbService.addContactToDatabase(contact);
 		if (result) {
 			System.out.println("Contact successfully added to Database!");
-			// Local list mein bhi add kar dete hain sync rakhne ke liye
 			contactList.add(contact);
 		} else {
 			System.out.println("Failed to add contact to Database.");
