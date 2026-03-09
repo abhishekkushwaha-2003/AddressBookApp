@@ -1,0 +1,15 @@
+{
+  "contacts": [
+    {
+      "id": "1",
+      "firstName": "Abhishek",
+      "lastName": "Kushwaha",
+      "address": "Anand Nagar",
+      "city": "Bhopal",
+      "state": "MP",
+      "zip": "785462",
+      "phoneNumber": "7418529635",
+      "email": "abhi@gmail.com"
+    }
+  ]
+}
