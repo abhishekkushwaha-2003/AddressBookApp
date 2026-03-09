@@ -10,10 +10,6 @@ import java.util.Scanner;
 
 import com.google.gson.Gson;
 
-/*
- * AddressBook class containing all UC operations
- */
-
 public class AddressBook {
 
 	private ArrayList<Contact> contactList = new ArrayList<>();

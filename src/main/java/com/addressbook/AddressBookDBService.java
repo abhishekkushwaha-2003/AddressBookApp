@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AddressBookDBService {
 
 	private static final String URL = "jdbc:mysql://localhost:3306/address_book_service";

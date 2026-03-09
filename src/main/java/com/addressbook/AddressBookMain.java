@@ -2,7 +2,6 @@ package com.addressbook;
 
 import java.util.Scanner;
 
-
 public class AddressBookMain {
 
 	public static void main(String[] args) {
@@ -83,9 +82,9 @@ public class AddressBookMain {
 				addressBook.displayContacts();
 				break;
 			case 3:
-			    break;
+				/* edit code same as before */ break;
 			case 4:
-				 break;
+				/* delete code */ break;
 			case 5:
 				addressBook.searchByCity(scanner.nextLine());
 				break;
