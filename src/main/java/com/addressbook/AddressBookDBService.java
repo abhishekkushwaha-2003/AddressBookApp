@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AddressBookDBService {
 
 	private static final String URL = "jdbc:mysql://localhost:3306/address_book_service";
@@ -120,5 +121,30 @@ public class AddressBookDBService {
 			System.out.println("Error counting by state: " + e.getMessage());
 		}
 		return count;
+	}
+
+	// UC20: Add new contact to Database
+	public boolean addContactToDatabase(Contact contact) {
+		String query = "INSERT INTO address_book (first_name, last_name, address, city, state, zip, phone, email, date_added) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURDATE())";
+
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+
+			statement.setString(1, contact.getFirstName());
+			statement.setString(2, contact.getLastName());
+			statement.setString(3, contact.getAddress());
+			statement.setString(4, contact.getCity());
+			statement.setString(5, contact.getState());
+			statement.setString(6, contact.getZip());
+			statement.setString(7, contact.getPhoneNumber());
+			statement.setString(8, contact.getEmail());
+
+			int rowsAffected = statement.executeUpdate();
+			return rowsAffected > 0;
+
+		} catch (Exception e) {
+			System.out.println("Error adding contact to DB: " + e.getMessage());
+		}
+		return false;
 	}
 }
