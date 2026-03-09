@@ -5,6 +5,8 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class AddressBookRESTAssuredTest {
@@ -49,5 +51,34 @@ public class AddressBookRESTAssuredTest {
 		System.out.println("UC 23: Total contacts now: " + allNames.size());
 		// Initial 1 + Added 2 = 3
 		Assertions.assertTrue(allNames.size() >= 3);
+	}
+
+	@Test
+	public void givenNewCityForContact_WhenUpdated_ShouldSyncWithAddressBook() {
+		AddressBook addressBook = new AddressBook();
+
+		// 1. fetching data first 
+		Response response = RestAssured.get("/contacts");
+		Contact[] contacts = response.as(Contact[].class);
+		addressBook.setContactList(Arrays.asList(contacts));
+
+		// updating city in local memory
+		String contactName = "Aditya";
+		String newCity = "Mumbai";
+
+		// 3. API par PUT request 
+		Response updateResponse = RestAssured.given().contentType("application/json")
+				.body("{\"firstName\":\"Aditya\", \"lastName\":\"Jayswal\", \"city\":\"" + newCity
+						+ "\", \"state\":\"MH\", \"zip\":\"400001\"}")
+				.put("/contacts/1");
+
+		Assertions.assertEquals(200, updateResponse.getStatusCode());
+
+		// 4. Verification: Sync check
+		Response finalResponse = RestAssured.get("/contacts/1");
+		String updatedCity = finalResponse.jsonPath().get("city");
+
+		System.out.println("UC 24: Updated City in JSON Server: " + updatedCity);
+		Assertions.assertEquals(newCity, updatedCity);
 	}
 }
