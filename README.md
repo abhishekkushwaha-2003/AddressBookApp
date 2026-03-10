@@ -1,13 +1,13 @@
-📅 03 Mar 2026  
+# 📅 03 Mar 2026  
 
 **🔹 UC1 – Create a Contact in Address Book** Branch: feature/UC1-create-contact
 
- Objective
+# Objective
 
 - Create a basic Contact entity to store personal details
 - Define the data structure for a single person's information
 
-Implementation
+# Implementation
 
 - Created a `Contact` class with private fields: `firstName`, `lastName`, `address`, `city`, `state`, `zip`, `phoneNumber`, and `email`
 - Implemented a constructor to initialize contact details
