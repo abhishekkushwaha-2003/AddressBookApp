@@ -1,13 +1,13 @@
-📅 03 Mar 2026  
+# 📅 03 Mar 2026  
 
 **🔹 UC2 – Add a New Contact to Address Book** Branch: feature/UC2-add-contact
 
- Objective
+# Objective
 
 - Implement functionality to add a new contact via user input
 - Manage a dynamic list of contacts within the Address Book
 
- Implementation
+# Implementation
 
 - Developed the `addContact()` method in the `AddressBook` class
 - Integrated the `Scanner` class to capture real-time user input for all contact fields
