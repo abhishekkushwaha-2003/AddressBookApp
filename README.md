@@ -1,2 +1,20 @@
-# Address Book App
-feature/UC3-edit-contact
+# 📅 09 Mar 2026  
+
+**🔹 UC24 – Update Contact Entry in JSON Server (REST API)** Branch: feature/UC24-update-entry-jsonserver
+
+# Objective
+
+- Implement the functionality to update existing contact details on the **JSON Server**
+- Ensure synchronization between the application's local state and the REST API backend
+
+# Implementation
+
+- Developed the `updateContactOnJSONServer()` method using HTTP **PUT** requests
+- Utilized **RestAssured** to target specific contact resources via their unique `id`
+- Implemented logic to update fields like `Address`, `City`, or `Phone Number` dynamically
+- Verified successful updates by checking for the `200 OK` HTTP status code
+- Ensured the local `ArrayList` is updated only after receiving a successful response from the server
+
+[feature/UC24-update-entry-jsonserver](https://github.com/abhishekkushwaha-2003/AddressBookApp/tree/feature/UC24-update-entry-jsonserver)
+
+---
